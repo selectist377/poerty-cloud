@@ -1,0 +1,9 @@
+# 诗云 Poetry Cloud — 依赖说明
+#
+# scripts/generate_final.py 仅使用 Python 3.8+ 标准库：
+#   json、re、math、statistics、pathlib、datetime、sys
+#
+# 因此本项目无需安装任何第三方包：
+#   python3 scripts/generate_final.py
+#
+# requirements.txt 保留为空依赖清单，用于明确“零第三方依赖”这一约束。
