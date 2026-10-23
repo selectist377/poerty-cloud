@@ -482,8 +482,8 @@ def write_report(poems, results, stats) -> Path:
         "唯一原则生成，无规避查重的替换痕迹。",
     ]
     for t in audit_texts:
-        for ln in wrap_cn("  " + t, 76):
-            out.append(ln)
+        for ln in wrap_cn(t, 72):
+            out.append("  " + ln)
     out.append("")
     out.append("  审计方式：以二字及以上重复字串扫描 + 逐行句法复核为主，未接入外部")
     out.append("  语言模型自动裁判；该结论属内部诊断，不等同独立验证。")
@@ -493,8 +493,18 @@ def write_report(poems, results, stats) -> Path:
     out.append("  依据 v3.9 第六章 6.4 节与第十五章 15.5 节，N≥90 自 v3.8 的“最终")
     out.append("  成稿必要条件”调整为辅助诊断指标。本报告同时给出 G1-G10 逐首判定与")
     out.append("  N 分分布：硬性门槛具有一票否决权，N 分只用于质量分层与复查定位。")
-    out.append("  本样本 N≥90 首数与达标首数相同，但不构成“N≥90 即合格”的规则依据。")
+    n90_adm = sum(1 for p_ in admitted if results[p_["poem_id"]]["N"] >= 90)
+    if n90_adm == len(admitted):
+        text = ("本样本达标作品均达到 N≥90；该结果只说明本样本的分数分布，"
+                "不构成“N≥90 即合格”的规则依据。")
+    else:
+        text = (f"本样本 {len(admitted)} 首达标作品中，N≥90 者 {n90_adm} 首；另有 "
+                f"{len(admitted) - n90_adm} 首低于 90 分仍按硬门槛入选，"
+                "正是 v3.9 将 N 降级为辅助诊断指标的直接体现。")
+    for ln in wrap_cn(text, 72):
+        out.append("  " + ln)
     out.append("")
+
     out.append("  本报告为规则一致性与执行性交付物，不宣称协议已通过独立实验验证。")
     out.append("")
     out.append("█▓▒░ 报告结束 ░▒▓█")
