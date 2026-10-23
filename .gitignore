@@ -1,0 +1,19 @@
+# 运行时与本地缓存
+__pycache__/
+*.py[cod]
+*.log
+.DS_Store
+Thumbs.db
+
+# 本地临时数据（不进入版本库）
+intermediate_data.json
+.scratch/
+.ghtok
+
+# 依赖目录（本项目不依赖第三方包）
+node_modules/
+venv/
+.venv/
+
+# 发布过程本地文件
+.pages.json
