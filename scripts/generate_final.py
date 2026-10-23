@@ -528,8 +528,10 @@ def write_gate_matrix(poems, results) -> Path:
 def write_collection(poems, results) -> Path:
     admitted = [p for p in poems if results[p["poem_id"]]["admitted"]]
     out = []
-    out.append("【诗云 v3.9】N≥90 终稿诗歌集")
+    out.append("【诗云 v3.9】终稿诗歌集（G=10 且五维单项≥15）")
     out.append(f"总计收录：{len(admitted)} 首")
+    n90 = sum(1 for p_ in admitted if results[p_["poem_id"]]["N"] >= 90)
+    out.append(f"其中 N≥90：{n90} 首（辅助诊断标签，不构成入选条件）")
     out.append("生成依据：诗云 v3.9 十二行生成式诗歌写作协议")
     out.append("筛选标准：G1-G10 全部通过，且 IR/MH/SD/SI/II 五维单项均不低于 15 分")
     out.append("说明：N≥90 为辅助诊断标签，不是入选的一票否决条件")
