@@ -41,7 +41,7 @@ def render_card(poem: dict, dims: dict, total: float, index: int) -> str:
           <h3 class="poem-title">{esc(poem['title'])}</h3>
           <p class="poem-summary">{esc(poem['summary'])}</p>
           <span class="poem-meta">{esc(BATCH_NAMES[poem['batch']])} · 总分 {total:.1f}</span>
-          <span class="poem-more" aria-hidden="true">展开全文</span>
+          <span class="poem-more"><span class="more-open">展开全文</span><span class="more-close">收起全文</span></span>
         </label>
         <div class="poem-body">
           <div class="poem-text">
@@ -223,6 +223,8 @@ def main() -> int:
 </body>
 </html>
 """
+    assert page.count('<span class="more-open">展开全文</span>') == len(admitted_rows), "展开全文出现次数异常"
+    assert page.count('<span class="more-close">收起全文</span>') == len(admitted_rows), "收起全文出现次数异常"
     OUT.write_text(page, encoding="utf-8", newline="\n")
     print(f"已生成 {OUT.relative_to(BASE)}：{len(admitted_rows)} 张诗卡，平均 N {stat['avg']:.2f}")
     return 0

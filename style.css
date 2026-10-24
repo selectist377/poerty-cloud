@@ -439,8 +439,9 @@ main { display: block; }
   color: var(--seal);
   border-bottom: 1px solid currentColor;
 }
-.poem-more::before { content: "展开全文"; }
-.poem-toggle:checked ~ .poem-head .poem-more::before { content: "收起全文"; }
+.poem-more .more-close { display: none; }
+.poem-toggle:checked ~ .poem-head .poem-more .more-open { display: none; }
+.poem-toggle:checked ~ .poem-head .poem-more .more-close { display: inline; }
 
 /* 朱红印章：纯 CSS */
 .seal {

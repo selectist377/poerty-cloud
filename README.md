@@ -29,6 +29,7 @@ poetry-cloud/
 ├── style.css                       # 水墨风格样式（纯 CSS，零外部资源）
 ├── README.md                       # 本文件
 ├── LICENSE                         # CC BY-NC 4.0 全文 + 中文摘要
+├── LICENSE-CODE                    # 脚本代码 MIT 许可
 ├── requirements.txt                # 空依赖清单（仅用标准库）
 ├── .gitignore
 ├── docs/
@@ -38,7 +39,8 @@ poetry-cloud/
 │   ├── certificate_v3.9.txt        # 认证与盲测通过证书
 │   ├── gate_matrix.txt             # G1–G10 逐首核验矩阵
 │   ├── pressure_test_log.md        # 第八轮路径 B 压力测试记录
-│   └── research_notes.md           # 研究与校订说明
+│   ├── research_notes.md           # 研究与校订说明
+│   └── PR_BODY.md                  # 主 PR 说明（由脚本生成）
 ├── scripts/
 │   ├── generate_final.py           # 终稿生成与评分脚本（仅标准库）
 │   └── raw_scores.json             # 五代理 × 五维原始评分
@@ -51,6 +53,7 @@ poetry-cloud/
     ├── build_data.py               # 批次合并与查重
     ├── build_site.py               # 静态页面生成
     ├── format_protocol.py          # 协议排版与校订
+    ├── publish2.sh / publish3.sh   # 发布脚本（本地使用，不含密钥）
     └── protocol_v3.9.raw.txt       # 协议原稿（校订输入）
 ```
 
@@ -58,7 +61,7 @@ poetry-cloud/
 
 ```bash
 # 1. 校验 100 首诗的形式（G1–G3、G4、G6、G7、G8 的可计算部分）
-python3 tools/validate_poems.py data/poems_source.json --strict
+python3 tools/validate_poems.py data/poems_source.json
 
 # 2. 复现五个评审配置的评分
 python3 tools/score_poems.py
@@ -97,5 +100,32 @@ python3 tools/build_site.py
 
 - 候选诗稿：100 首（五批次，每批 20 首）
 - 通过 G1–G10 且五维单项 ≥15：100 首
-- 平均总分 N：93.28；最高 97.0；最低 87.0
-- N≥90：97 首（辅助诊断）
+- 平均总分 N：93.28；最高 97.0（SY-068《针灸》）；最低 87.0（SY-027《毕业照》）
+- N≥90：97 首（辅助诊断）；另有 3 首低于 90 仍按硬门槛入选，体现 v3.9 的 N 定位
+
+## 方法与边界
+
+- 本仓库的评分属 **E1 内部盲测（模型评审）**：五个评审配置按公开权重独立打分，可复现，但不等同人工评审或外部验证。
+- 第八轮采用**路径 B 结构化压力测试**（见 `docs/pressure_test_log.md`），多作品比对未完成。
+- 未完成外部人工盲评（E2）、真实读者实验与跨模型独立复核。
+- 因此本仓库**不宣称**协议已通过独立实验验证，也不把 T/Q/N 分数当作文学质量刻度。
+
+详细校订与研究说明见 [`docs/research_notes.md`](docs/research_notes.md)。
+
+## 开源声明
+
+- **诗歌文本、报告、证书与页面文案**：采用 [CC BY-NC 4.0](LICENSE)（署名—非商业性使用 4.0 国际）授权。
+- **脚本代码**（`scripts/`、`tools/` 下的 `.py` 文件）：采用 [MIT 许可证](LICENSE-CODE)。
+- 署名建议：*诗云 Poetry Cloud（2026），《诗云 v3.9 终稿诗歌集》，CC BY-NC 4.0*。
+
+## 致谢
+
+感谢五组评审配置（R1 古典意象、R2 形式结构、R3 语义深度、R4 创新实验、R5 综合编辑）在背靠背盲测中的独立打分；感谢协议 v3.6 至 v3.9 各轮迭代中对虚词配额、同节去重与 N 分定位的反复讨论；感谢近期诗歌生成与评价研究（POEMetric、Checklists、Specification Self-Correction、唐诗生成偏差、CaLLM、The Reader is the Metric）为“形式与质量分离”“模型评审有偏”提供的校准依据。
+
+## 版本历史
+
+- **v3.6**：确立三节十二行、A/B 行式与 G1–G10 硬性门槛框架。
+- **v3.7**：引入 NLP 辅助验证与自然度诊断分，分离自审与验证。
+- **v3.8**：将 NLP 自然度阈值提高到 90 并一度设为终稿硬条件；强化同节去重口径。
+- **v3.9**：取消虚词机械配额，改按语法功能判断；将 N≥90 降级为辅助诊断指标；单字线索改为可选技法；新增情感表达可执行标准与停顿断句检查；统一 G 编号与符号（NLP 诊断分记为 N_d）。
+- **本仓库**：完成 v3.9 全量交付物、五批次 100 首诗、五代理评分、报告与站点，并修正协议与研究方案中的内部矛盾（详见 `docs/research_notes.md`）。
